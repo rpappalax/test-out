@@ -22,14 +22,14 @@ import test_out
 
 tout = TestOut()
 
-for i in xrange(1, max):
+for i in xrange(1, 6):
     tout.test_start(i)
     
     # FAKE TEST
     print 'running your test here...'
     # your result must be: 'PASS', 'FAIL' or 'ERROR'
     # generating random for this example:
-    result = test.get_result_random()
+    result = tout.get_result_random()
     
     tout.test_end(result)
     
@@ -53,23 +53,23 @@ import test_out
 tout = TestOut()
 
 for i in xrange(1, 6):
-    test.test_start(i, 'CUSTOM')
-    test.print_log('TEST SETUP'.format(i))
+    tout.test_start(i, 'CUSTOM')
+    tout.print_log('TEST SETUP'.format(i))
     print 'starting Selenium'
     print 'starting apache'
     print 'starting server XYZ'
     
-    test.print_log('START TEST'.format(i))
-    test.timer_start()
+    tout.print_log('START TEST'.format(i))
+    tout.timer_start()
 
     # FAKE TEST
     print 'running your test here...'
     # your result must be: 'PASS', 'FAIL' or 'ERROR'
     # generating random for this example:
-    result = test.get_result_random()
+    result = tout.get_result_random()
     time.sleep(2)
-    test.timer_end()
-    test.test_end(result)
+    tout.timer_end()
+    tout.test_end(result)
 
 test.write_result_summary()
 ```
