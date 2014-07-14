@@ -1,11 +1,13 @@
 
-AVG TEST DURATION: 2s
-TEST RESULTS --  PASS: 1, FAIL: 3, ERROR: 1
+AVG TEST DURATION   |   2s
+--------------------+--------------------------------
+TEST RESULTS        |   PASS: 2, FAIL: 2, ERROR: 1
 
-      TIMESTAMP        TIME      #   RESULT   DESCRIPTION                                      
-********************* ****** ****** ******** **************************************************
- 2014-07-13 19:04:35     2s      1    PASS    This test was bogus bro!                          
- 2014-07-13 19:04:37     2s      2    FAIL    This test was bogus bro!                          
- 2014-07-13 19:04:39     2s      3   ERROR    This test was bogus bro!                          
- 2014-07-13 19:04:41     2s      4    FAIL    This test was bogus bro!                          
- 2014-07-13 19:04:43     2s      5    FAIL    This test was bogus bro!                          
+
+    #        TIMESTAMP        TIME   RESULT   DESCRIPTION                                      
+****** ********************* ****** ******** **************************************************
+    1   2014-07-13 23:52:17     2s    PASS    This test was bogus bro!                          
+    2   2014-07-13 23:52:19     2s    FAIL    This test was bogus bro!                          
+    3   2014-07-13 23:52:21     2s   ERROR    This test was bogus bro!                          
+    4   2014-07-13 23:52:23     2s    PASS    This test was bogus bro!                          
+    5   2014-07-13 23:52:25     2s    FAIL    This test was bogus bro!                          

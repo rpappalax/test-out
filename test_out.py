@@ -132,22 +132,54 @@ class TestOut(object):
         ts = time.time()
         return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
+    def box_it(self, results):
+        """takes a list of lists (key, value pairs) and wraps them in a grid
+        results = [
+            [ 'AVG TEST DURATION', '2s' ],
+            [ 'TEST RESULTS', 'PASS: 2, FAIL: 0, ERROR: 3' ],
+            [ 'XXXXXXXXXXXXXXXXXXXXXXX', 'YYYYYYYYYY' ],
+            [ 'AAA', 'BBBB' ]
+        ] """
+        spacer = '   '
+        len_spacer = len(spacer)
+        max_len_keys = max([ len(str(key)) for key, val  in results])
+        results_reversed = [(t[1], t[0]) for t in results]
+        max_len_vals = max([ len(str(val)) for val, key  in results_reversed])
+        line_k= (max_len_keys + len_spacer) * '-'
+        line_v= (len_spacer + max_len_vals + len_spacer) * '-'
+        len_cell_k = max_len_keys + len_spacer
+        # len_cell_v = max_len_vals + len_spacer
+        i =0
+        box = ''
+        for k, v in results:
+            spacer_k = (len_cell_k - len(k)) * ' '
+            box +=  '{}|{}'.format(k + spacer_k, spacer + v) + '\n'
+            if len(results) > 1 and i < len(results) - 1:
+                box += '{}+{}'.format(line_k, line_v) + '\n'
+            i += 1
+        return box
+
+
+
     def print_log(self, message, log_type='SUB_SECTION'):
-        if log_type is 'BIG_STRIPE':
+        if log_type is 'BIG_BANNER':
             line = '******************\n******************\n******************\n******************\n******************'
             print line
             print '\n{}\n'.format(message)
             print line
         elif log_type is 'NEW_SECTION':
-            header_line = '=================================================================================='
+            header_line = '=' * 70
             print '\n\n{}\n{}\n{}\n'.format(header_line, message, header_line)
+        elif log_type is 'SUMMARY':
+            header_line = '*' * 70
+            print '\n\n{}\n{}\n{}'.format(header_line, message, header_line) + '\n\n'
         else:
-            header_line = '------------------------------------------------'
+            header_line = '-' * 45
             print '\n{}\n{}\n{}'.format(header_line, message, header_line)
 
     def _get_results_header(self):
-        headers = '{:^21} {:>5}  {:>6} {:^8} {:<50}'.format('TIMESTAMP', 'TIME', '# ', 'RESULT', ' DESCRIPTION')
-        lines = '{:*^21} {:*>6} {:*>6} {:*^8} {:*<50}'.format('', '', '', '', '')
+        headers = '{:>5}  {:^21} {:>5}  {:^8} {:<50}'.format('#', 'TIMESTAMP', 'TIME', 'RESULT', ' DESCRIPTION')
+        lines = '{:*>6} {:*^21} {:*>6} {:*^8} {:*<50}'.format('', '', '', '', '')
         return headers + '\n' + lines
 
     def write_result(self, result, message, test_duration):
@@ -160,7 +192,7 @@ class TestOut(object):
             log_file.write('\n' + header + '\n')
             log_file.close()
 
-        test_result = '{:^21} {:>4}s  {:>6} {:^8}  {:<50}'.format(timestamp, test_duration, str(self._test_num) + ' ', result , message)
+        test_result = '{:>5}  {:^21} {:>4}s  {:^8}  {:<50}'.format(self.test_num, timestamp, test_duration, result , message)
         log_file = open(self._log_file, "a")
         log_file.write(test_result + '\n')
         log_file.close()
@@ -168,16 +200,17 @@ class TestOut(object):
         print 'TEST DURATION: {}s'.format(self.test_duration)
 
     def write_result_summary(self):
-
-        # write to console
-        self.print_log('SUMMARY RESULTS')
-        summary = 'AVG TEST DURATION: {}s'.format(self.test_duration_avg) + '\n'
-        summary += 'TEST RESULTS --  PASS: {}, FAIL: {}, ERROR: {}'.format(
+        summary = [
+            [ 'AVG TEST DURATION',  '{}s'.format(self.test_duration_avg)],
+            [ 'TEST RESULTS', 'PASS: {}, FAIL: {}, ERROR: {}'.format(
             self.test_result_count[0],
             self.test_result_count[1],
             self.test_result_count[2]
-        )
-        print summary
+             )]
+        ]
+        self.print_log('SUMMARY RESULTS', 'SUMMARY')
+        summary = self.box_it(summary)
+        print summary + '\n\n'
 
         # write to test result log file
         # Note: we keep around the extra file til the last minute
@@ -217,48 +250,43 @@ if __name__ == '__main__':
 
     '''
     Example usage
-    we want to track things like:
-    * number of tests: passed, failed & script errors
-    * test duration (each run)
-    * average test duration (PASS only)
-
     '''
     test = TestOut()
 
     ###########################
-    # Simple Usage
-    ###########################
-    # for i in xrange(1, 6):
-    #     test.test_start(i)
-    #
-    #     # FAKE TEST
-    #     print 'running your test here...'
-    #     result = test.get_result_random()
-    #     time.sleep(2)
-    #
-    #     test.test_end(result)
-    #
-    # test.write_result_summary()
-
-    ###########################
-    # Custom Usage
+    # Example #1 - Simple Usage
     ###########################
     for i in xrange(1, 6):
-        test.test_start(i, 'CUSTOM')
-        test.print_log('TEST SETUP'.format(i))
-        print 'starting Selenium'
-        print 'starting apache'
-        print 'starting server XYZ'
-        test.print_log('START TEST'.format(i))
-        test.timer_start()
+        test.test_start(i)
 
         # FAKE TEST
         print 'running your test here...'
         result = test.get_result_random()
         time.sleep(2)
-        test.timer_end()
+
         test.test_end(result)
 
     test.write_result_summary()
+
+    ###########################
+    # Example #2 - Custom Usage
+    ###########################
+    # for i in xrange(1, 6):
+    #     test.test_start(i, 'CUSTOM')
+    #     test.print_log('TEST SETUP'.format(i))
+    #     print 'starting Selenium'
+    #     print 'starting apache'
+    #     print 'starting server XYZ'
+    #     test.print_log('START TEST'.format(i))
+    #     test.timer_start()
+    #
+    #     # FAKE TEST
+    #     print 'running your test here...'
+    #     result = test.get_result_random()
+    #     time.sleep(2)
+    #     test.timer_end()
+    #     test.test_end(result)
+    #
+    # test.write_result_summary()
 
 
