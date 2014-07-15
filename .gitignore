@@ -2,4 +2,5 @@
 .swp
 /.idea
 *.BAK
+.DS_Store
 

@@ -18,7 +18,8 @@ Python class to provide useful logging, test run data and summary statistics for
 - see: [Sample output](https://github.com/rpappalax/test-out/blob/master/Examples/console_log_simple.txt)
 
 ```
-import test_out
+import time
+from test_out import TestOut 
 
 tout = TestOut()
 
@@ -30,6 +31,7 @@ for i in xrange(1, 6):
     # your result must be: 'PASS', 'FAIL' or 'ERROR'
     # generating random for this example:
     result = tout.get_result_random()
+    time.sleep(2)
     
     tout.test_end(result)
     
@@ -48,7 +50,8 @@ tout.write_result_summary()
 -see: [Sample output](https://github.com/rpappalax/test-out/blob/master/Examples/console_log_custom.txt)
 
 ```
-import test_out 
+import time
+from test_out import TestOut 
 
 tout = TestOut()
 
