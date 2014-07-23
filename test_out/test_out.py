@@ -7,6 +7,7 @@ import timeit
 import os
 import shutil
 import random
+from box_it_up import Box
 
 '''
 Test result handler and formatter
@@ -43,6 +44,8 @@ class TestOut(object):
         self._log_file = 'test.log'
         self.dir_current = os.getcwd()
         self._test_num = 0
+        # self._test_result = []
+        self._test_results = []
         # PASS, FAIL, ERROR
         self._test_result_count = [ 0, 0, 0 ]
         self._test_duration_total = 0
@@ -73,6 +76,10 @@ class TestOut(object):
     @test_num.setter
     def test_num(self, value):
         self._test_num = value
+
+    @property
+    def test_results(self):
+        return self._test_results
 
     @property
     def test_result_count(self):
@@ -119,7 +126,7 @@ class TestOut(object):
             return 'ERROR'
 
 
-    def set_test_results(self, result, test_duration):
+    def update_result_count(self, result, test_duration):
         if result is 'PASS':
             self._test_result_count[0] += 1
             self.test_duration_total = test_duration
@@ -127,6 +134,7 @@ class TestOut(object):
             self._test_result_count[1] += 1
         else: # ERROR
             self._test_result_count[2] += 1
+
 
     def _get_timestamp(self):
         ts = time.time()
@@ -148,7 +156,6 @@ class TestOut(object):
         line_k= (max_len_keys + len_spacer) * '-'
         line_v= (len_spacer + max_len_vals + len_spacer) * '-'
         len_cell_k = max_len_keys + len_spacer
-        # len_cell_v = max_len_vals + len_spacer
         i =0
         box = ''
         for k, v in results:
@@ -172,7 +179,7 @@ class TestOut(object):
             print '\n\n{}\n{}\n{}\n'.format(header_line, message, header_line)
         elif log_type is 'SUMMARY':
             header_line = '*' * 70
-            print '\n\n{}\n{}\n{}'.format(header_line, message, header_line) + '\n\n'
+            print '\n\n{}\n{}\n{}'.format(header_line, message, header_line) + '\n'
         else:
             header_line = '-' * 45
             print '\n{}\n{}\n{}'.format(header_line, message, header_line)
@@ -182,22 +189,41 @@ class TestOut(object):
         lines = '{:*>6} {:*^21} {:*>6} {:*^8} {:*<50}'.format('', '', '', '', '')
         return headers + '\n' + lines
 
+    # @TODO: replace this method with a box-it-up one
+    #        note - we won't know max length til all data has been submitted
+    #        but we could rewrite entire log with each pass reformatting as we go
+    #        advantage of this approach is that no data is lost upon crash
+    #        advantage of box-it-up lib approach is that simpler
     def write_result(self, result, message, test_duration):
         message = str(message)
-        timestamp = self._get_timestamp()
 
-        if self._test_num == 1:
-            header = self._get_results_header()
-            log_file = open(self._log_file, "w")
-            log_file.write('\n' + header + '\n')
-            log_file.close()
-
-        test_result = '{:>5}  {:^21} {:>4}s  {:^8}  {:<50}'.format(self.test_num, timestamp, test_duration, result , message)
-        log_file = open(self._log_file, "a")
-        log_file.write(test_result + '\n')
-        log_file.close()
+        # stdout
         print '\nTEST RESULT: {} {}'.format(result, message)
         print 'TEST DURATION: {}s'.format(self.test_duration)
+
+        # log file
+        timestamp = self._get_timestamp()
+        # if self._test_num == 1:
+        #     header = self._get_results_header()
+        #     log_file = open(self._log_file, "w")
+        #     log_file.write('\n' + header + '\n')
+        #     log_file.close()
+        #
+        # test_result = '{:>5}  {:^21} {:>4}s  {:^8}  {:<50}'.format(self.test_num, timestamp, test_duration, result , message)
+        #
+        # log_file = open(self._log_file, "a")
+        # log_file.write(test_result + '\n')
+        # log_file.close()
+
+        orientations = [ '>', '^', '>', '^', '<' ]
+        box = Box(table_data=self._test_results, type='MINIMAL', col_orientations=orientations)
+        summary = box.box_it()
+
+        log_file = open(self._log_file, "w")
+        log_file.write(summary + '\n\n')
+        log_file.close()
+
+
 
     def write_result_summary(self):
         summary = [
@@ -208,13 +234,20 @@ class TestOut(object):
             self.test_result_count[2]
              )]
         ]
+
+
         self.print_log('SUMMARY RESULTS', 'SUMMARY')
-        summary = self.box_it(summary)
+
+        box = Box(table_data=summary, type='SIMPLE_OUTLINE', header=False)
+        summary = box.box_it()
         print summary + '\n\n'
 
         # write to test result log file
         # Note: we keep around the extra file til the last minute
         #       in case the script crashes, we won't lose data
+        # @TODO: update box-it-up lib to handle individual rows
+
+
         log_file_tmp = self._log_file.replace('.log', '_summary.log')
         log_file = open(log_file_tmp, "w")
         with open (self._log_file, "r") as myfile:
@@ -224,6 +257,39 @@ class TestOut(object):
         log_file.close()
         shutil.copy(log_file_tmp, self._log_file)
         os.remove(log_file_tmp)
+
+
+    # def write_result_summary(self):
+    #     summary = [
+    #         [ 'AVG TEST DURATION',  '{}s'.format(self.test_duration_avg)],
+    #         [ 'TEST RESULTS', 'PASS: {}, FAIL: {}, ERROR: {}'.format(
+    #         self.test_result_count[0],
+    #         self.test_result_count[1],
+    #         self.test_result_count[2]
+    #          )]
+    #     ]
+    #
+    #
+    #     self.print_log('SUMMARY RESULTS', 'SUMMARY')
+    #
+    #     box = Box(table_data=summary, type='SIMPLE_OUTLINE', header=False)
+    #     summary = box.box_it()
+    #     summary = 'SUMMARY RESULTS{}\n'.format(summary)
+    #     print summary
+    #
+    #     # write to test result log file
+    #     # Note: we keep around the extra file til the last minute
+    #     #       in case the script crashes, we won't lose data
+    #     # @TODO: update box-it-up lib to handle individual rows
+    #     log_file_tmp = self._log_file.replace('.log', '_summary.log')
+    #     log_file = open(log_file_tmp, "w")
+    #     with open (self._log_file, "r") as myfile:
+    #         test_data=myfile.read()
+    #     log_file.write('\n' + summary + '\n')
+    #     log_file.write(test_data)
+    #     log_file.close()
+    #     shutil.copy(log_file_tmp, self._log_file)
+    #     os.remove(log_file_tmp)
 
     def timer_start(self):
         self._timer_start = timeit.default_timer()
@@ -240,11 +306,27 @@ class TestOut(object):
         if test_type is 'SIMPLE':
             self.timer_start()
 
-    def test_end(self, result, test_type='SIMPLE'):
+    def test_end(self, result_pass_fail, comment='', test_type='SIMPLE'):
         if test_type is 'SIMPLE':
             self.timer_end()
-        self.set_test_results(result, self.test_duration)
-        self.write_result(result, 'This test was bogus bro!', self.test_duration)
+
+        # OLD
+        self.update_result_count(result_pass_fail, self.test_duration)
+
+        # NEW
+        result = []
+        result.append(self.test_num)
+        result.append(self._get_timestamp())
+        result.append(str(self.test_duration) + 's')
+        result.append(result_pass_fail)
+        result.append(comment)
+        if self.test_num == 1:
+            header = [ '#', 'TIMESTAMP', 'TIME', 'RESULT', 'DESCRIPTION' ]
+            self._test_results.append(header)
+        self._test_results.append(result)
+
+        self.write_result(result_pass_fail, comment, self.test_duration)
+
 
 if __name__ == '__main__':
 
@@ -262,9 +344,10 @@ if __name__ == '__main__':
         # FAKE TEST
         print 'running your test here...'
         result = test.get_result_random()
+        comment = 'This test was bogus, bro!'
         time.sleep(2)
 
-        test.test_end(result)
+        test.test_end(result, comment)
 
     test.write_result_summary()
 
