@@ -4,7 +4,7 @@ TEST RUN # 1
 
 running your test here...
 
-TEST RESULT: PASS This test was bogus bro!
+TEST RESULT: FAIL This test was bogus, bro!
 TEST DURATION: 2s
 
 
@@ -14,7 +14,7 @@ TEST RUN # 2
 
 running your test here...
 
-TEST RESULT: FAIL This test was bogus bro!
+TEST RESULT: PASS This test was bogus, bro!
 TEST DURATION: 2s
 
 
@@ -24,7 +24,7 @@ TEST RUN # 3
 
 running your test here...
 
-TEST RESULT: ERROR This test was bogus bro!
+TEST RESULT: FAIL This test was bogus, bro!
 TEST DURATION: 2s
 
 
@@ -34,7 +34,7 @@ TEST RUN # 4
 
 running your test here...
 
-TEST RESULT: PASS This test was bogus bro!
+TEST RESULT: PASS This test was bogus, bro!
 TEST DURATION: 2s
 
 
@@ -44,7 +44,7 @@ TEST RUN # 5
 
 running your test here...
 
-TEST RESULT: FAIL This test was bogus bro!
+TEST RESULT: PASS This test was bogus, bro!
 TEST DURATION: 2s
 
 
@@ -53,7 +53,7 @@ SUMMARY RESULTS
 **********************************************************************
 
 
-AVG TEST DURATION   |   2s
---------------------+--------------------------------
-TEST RESULTS        |   PASS: 2, FAIL: 2, ERROR: 1
-
+.-------------------+----------------------------.
+| AVG TEST DURATION | 2s                         |
+| TEST RESULTS      | PASS: 3, FAIL: 2, ERROR: 0 |
++-------------------+----------------------------+

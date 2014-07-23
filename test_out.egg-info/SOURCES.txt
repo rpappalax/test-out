@@ -5,4 +5,5 @@ test_out/test_out.py
 test_out.egg-info/PKG-INFO
 test_out.egg-info/SOURCES.txt
 test_out.egg-info/dependency_links.txt
+test_out.egg-info/requires.txt
 test_out.egg-info/top_level.txt

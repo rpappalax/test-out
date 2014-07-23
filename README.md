@@ -31,9 +31,10 @@ for i in xrange(1, 6):
     # your result must be: 'PASS', 'FAIL' or 'ERROR'
     # generating random for this example:
     result = tout.get_result_random()
+    comment = ' - This test is bogus, bro!'
     time.sleep(2)
     
-    tout.test_end(result)
+    tout.test_end(result, comment)
     
 tout.write_result_summary()
 ```
@@ -70,9 +71,10 @@ for i in xrange(1, 6):
     # your result must be: 'PASS', 'FAIL' or 'ERROR'
     # generating random for this example:
     result = tout.get_result_random()
+    comment = '- This test is bogus, bro'
     time.sleep(2)
     tout.timer_end()
-    tout.test_end(result)
+    tout.test_end(result, comment)
 
 test.write_result_summary()
 ```

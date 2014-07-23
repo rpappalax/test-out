@@ -1,13 +1,13 @@
 Metadata-Version: 1.1
 Name: test-out
-Version: 0.1.3
+Version: 0.1.5
 Summary: Python class to provide helpful logging, test run data and summary statistics for automated tests.
 Home-page: https://github.com/rpappalax/test-out
 Author: Richard Pappalardo
 Author-email: rpappalax@gmail.com
-License: UNKNOWN
+License: MIT
 Description: UNKNOWN
-Keywords: testing,logging,reporting,stats
+Keywords: testing logging reporting stats automation qa
 Platform: UNKNOWN
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 2

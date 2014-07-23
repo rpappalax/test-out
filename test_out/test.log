@@ -1,15 +1,16 @@
 
-
+TEST RESULT SUMMARY
 .-------------------+----------------------------.
 | AVG TEST DURATION | 2s                         |
-| TEST RESULTS      | PASS: 2, FAIL: 1, ERROR: 2 |
+| TEST RESULTS      | PASS: 1, FAIL: 2, ERROR: 2 |
 +-------------------+----------------------------+
 
-  #        TIMESTAMP        TIME   RESULT   DESCRIPTION               
- *** ********************* ****** ******** *************************** 
-  1   2014-07-23 10:04:08     2s    PASS    This test was bogus, bro! 
-  2   2014-07-23 10:04:10     2s   ERROR    This test was bogus, bro! 
-  3   2014-07-23 10:04:12     2s    FAIL    This test was bogus, bro! 
-  4   2014-07-23 10:04:14     2s   ERROR    This test was bogus, bro! 
-  5   2014-07-23 10:04:16     2s    PASS    This test was bogus, bro! 
+
+  #        TIMESTAMP        TIME   RESULT   DESCRIPTION 
+ *** ********************* ****** ******** ************* 
+  1   2014-07-23 10:43:17     2s   ERROR                
+  2   2014-07-23 10:43:19     2s   ERROR                
+  3   2014-07-23 10:43:21     2s    PASS                
+  4   2014-07-23 10:43:23     2s    FAIL                
+  5   2014-07-23 10:43:25     2s    FAIL                
 

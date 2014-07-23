@@ -16,7 +16,7 @@ START TEST
 ---------------------------------------------
 running your test here...
 
-TEST RESULT: ERROR This test was bogus bro!
+TEST RESULT: ERROR 
 TEST DURATION: 2s
 
 
@@ -37,7 +37,7 @@ START TEST
 ---------------------------------------------
 running your test here...
 
-TEST RESULT: PASS This test was bogus bro!
+TEST RESULT: ERROR 
 TEST DURATION: 2s
 
 
@@ -58,7 +58,7 @@ START TEST
 ---------------------------------------------
 running your test here...
 
-TEST RESULT: PASS This test was bogus bro!
+TEST RESULT: PASS 
 TEST DURATION: 2s
 
 
@@ -79,7 +79,7 @@ START TEST
 ---------------------------------------------
 running your test here...
 
-TEST RESULT: FAIL This test was bogus bro!
+TEST RESULT: FAIL 
 TEST DURATION: 2s
 
 
@@ -100,7 +100,7 @@ START TEST
 ---------------------------------------------
 running your test here...
 
-TEST RESULT: PASS This test was bogus bro!
+TEST RESULT: FAIL 
 TEST DURATION: 2s
 
 
@@ -109,125 +109,7 @@ SUMMARY RESULTS
 **********************************************************************
 
 
-AVG TEST DURATION   |   2s
---------------------+-----------------------------
-TEST RESULTS        |   PASS: 3, FAIL: 1, ERROR: 1
-
-
-
-(test-out)rpappalardo-17419:test-out rpappalardo$ python test_out.py
-
-
-======================================================================
-TEST RUN # 1
-======================================================================
-
-
----------------------------------------------
-TEST SETUP
----------------------------------------------
-starting Selenium
-starting apache
-starting server XYZ
-
----------------------------------------------
-START TEST
----------------------------------------------
-running your test here...
-
-TEST RESULT: FAIL This test was bogus bro!
-TEST DURATION: 2s
-
-
-======================================================================
-TEST RUN # 2
-======================================================================
-
-
----------------------------------------------
-TEST SETUP
----------------------------------------------
-starting Selenium
-starting apache
-starting server XYZ
-
----------------------------------------------
-START TEST
----------------------------------------------
-running your test here...
-
-TEST RESULT: FAIL This test was bogus bro!
-TEST DURATION: 2s
-
-
-======================================================================
-TEST RUN # 3
-======================================================================
-
-
----------------------------------------------
-TEST SETUP
----------------------------------------------
-starting Selenium
-starting apache
-starting server XYZ
-
----------------------------------------------
-START TEST
----------------------------------------------
-running your test here...
-
-TEST RESULT: ERROR This test was bogus bro!
-TEST DURATION: 2s
-
-
-======================================================================
-TEST RUN # 4
-======================================================================
-
-
----------------------------------------------
-TEST SETUP
----------------------------------------------
-starting Selenium
-starting apache
-starting server XYZ
-
----------------------------------------------
-START TEST
----------------------------------------------
-running your test here...
-
-TEST RESULT: PASS This test was bogus bro!
-TEST DURATION: 2s
-
-
-======================================================================
-TEST RUN # 5
-======================================================================
-
-
----------------------------------------------
-TEST SETUP
----------------------------------------------
-starting Selenium
-starting apache
-starting server XYZ
-
----------------------------------------------
-START TEST
----------------------------------------------
-running your test here...
-
-TEST RESULT: FAIL This test was bogus bro!
-TEST DURATION: 2s
-
-
-**********************************************************************
-SUMMARY RESULTS
-**********************************************************************
-
-
-AVG TEST DURATION   |   2s
---------------------+--------------------------------
-TEST RESULTS        |   PASS: 1, FAIL: 3, ERROR: 1
+.-------------------+----------------------------.
+| AVG TEST DURATION | 2s                         |
+| TEST RESULTS      | PASS: 1, FAIL: 2, ERROR: 2 |
++-------------------+----------------------------+
